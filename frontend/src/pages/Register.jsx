@@ -5,7 +5,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import EmailIcon from "@mui/icons-material/Email";
 import InputAdornment from "@mui/material/InputAdornment";
 import LockIcon from "@mui/icons-material/Lock";
-import hackerImg from "../assets/shield.png";
+import shieldImg from "../assets/shield.png";
 
 function Register() {
   const textFieldStyle = {
@@ -16,6 +16,16 @@ function Register() {
     },
     "& .MuiInputBase-input": {
       color: "white",
+    },
+    "& input:-webkit-autofill, & textarea:-webkit-autofill": {
+      WebkitBoxShadow: "0 0 0 1000px #1f2937 inset !important",
+      WebkitTextFillColor: "#ffffff !important",
+      caretColor: "#ffffff",
+      transition: "background-color 5000s ease-in-out 0s",
+    },
+    "& input:-webkit-autofill:focus, & textarea:-webkit-autofill:focus": {
+      WebkitBoxShadow: "0 0 0 1000px #1f2937 inset !important",
+      WebkitTextFillColor: "#ffffff !important",
     },
     "& .MuiInputLabel-root": {
       color: "white", // label when idle
@@ -28,7 +38,7 @@ function Register() {
   return (
     <main className="min-h-screen bg-gray-900 flex justify-center items-center gap-[15%]">
       <img
-        src={hackerImg}
+        src={shieldImg}
         alt="Security"
         className="hidden lg:block w-[450px] h-[450px] object-cover rounded-lg"
       />
@@ -48,7 +58,7 @@ function Register() {
           <form className="w-52 sm:w-2xs  md:w-96 flex flex-col gap-6 bg-gray-800 p-8 rounded-lg shadow-lg">
             <TextField
               required
-              id="outlined-required"
+              id="username"
               label="Username"
               color="primary"
               sx={textFieldStyle}
@@ -65,7 +75,7 @@ function Register() {
             />
             <TextField
               required
-              id="outlined-required"
+              id="email"
               label="Email"
               sx={textFieldStyle}
               slotProps={{
@@ -79,7 +89,7 @@ function Register() {
               }}
             />
             <TextField
-              id="outlined-password-input"
+              id="password"
               label="Password"
               type="password"
               sx={textFieldStyle}
@@ -94,7 +104,7 @@ function Register() {
               }}
             />
             <TextField
-              id="outlined-password-input"
+              id="confirmPassword"
               label="Confirm Password"
               type="password"
               sx={textFieldStyle}
