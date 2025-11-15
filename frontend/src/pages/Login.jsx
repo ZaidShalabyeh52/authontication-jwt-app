@@ -8,7 +8,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import shieldImg from "../assets/shield.png";
 import { useForm } from "react-hook-form";
 
-function Register() {
+function LogIn() {
   const {
     register,
     handleSubmit,
@@ -205,4 +205,4 @@ function Register() {
     </main>
   );
 }
-export default Register;
+export default LogIn;

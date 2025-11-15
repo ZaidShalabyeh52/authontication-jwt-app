@@ -6,7 +6,7 @@ import ResponsiveAppBar from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
-import Login from "./pages/Login.jsx";
+import LogIn from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 
 createRoot(document.getElementById("root")).render(
@@ -17,7 +17,7 @@ createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LogIn />} />
         <Route path="/register" element={<Register />} />
       </Routes>
 
