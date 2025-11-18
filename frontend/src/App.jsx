@@ -7,7 +7,7 @@ function App() {
   return (
     <main className="min-h-screen bg-gray-900 flex flex-col">
       <div className="min-h-[60vh] flex items-center justify-center bg-gray-900 text-white">
-        <h1 className="md:text-[40px] lg:text-[60px] text-[32px] font-extrabold text-center px-4 w-[85%]">
+        <h1 className="text-2xl sm:text-[40px] lg:text-[60px] font-extrabold text-center px-4 w-full sm:w-[85%]">
           Register now or log in to our authentication app to experience true{" "}
           <span className="bg-clip-text text-transparent bg-linear-to-r from-[#0080ff] to-[#00ffb3]">
             secure access
@@ -15,7 +15,7 @@ function App() {
         </h1>
       </div>
 
-      <div className="flex justify-center items-center gap-7">
+      <div className="flex justify-center items-center gap-7 sm:flex-row flex-col">
         <Button
           component={Link}
           to="/register"
