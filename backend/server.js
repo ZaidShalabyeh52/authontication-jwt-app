@@ -3,6 +3,7 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import usersRouter from "./routes/usersRouter.js";
 import passport from "./controllers/passport.js";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 dotenv.config({ path: "./.env" });
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(passport.initialize());
+app.use(cookieParser());
 
 app.use("/", usersRouter);
 

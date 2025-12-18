@@ -8,6 +8,8 @@ import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import LogIn from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
+import ProtectedPage from "./pages/ProtectedPage.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import ErrorPage from "./pages/Error.jsx";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -25,8 +27,16 @@ createRoot(document.getElementById("root")).render(
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<LogIn />} />
-          <Route path="/register" element={<Register />} />
-
+          <Route path="/register" element={<Register />} />{" "}
+          <Route
+            path="/protected"
+            element={
+              <ProtectedRoute>
+                {" "}
+                <ProtectedPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </ErrorBoundary>
