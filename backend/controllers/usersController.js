@@ -6,10 +6,12 @@ import passport, {
 } from "../controllers/passport.js";
 import prisma from "../prismaClient.js";
 import bcrypt from "bcryptjs";
-import path from "path";
 
 export async function createUserPost(req, res) {
   try {
+    if (req.user) {
+      return res.status(403).json({ error: "Already logged in" });
+    }
     const { username, password, email } = req.body;
 
     if (!password || !username || !email) {
@@ -21,7 +23,7 @@ export async function createUserPost(req, res) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: {
-        useranme,
+        username,
         email,
         password: hashedPassword,
       },
@@ -30,6 +32,8 @@ export async function createUserPost(req, res) {
 
     return res.status(201).json(user);
   } catch (err) {
+    console.log("Body:", req.body);
+    console.error(err);
     const message =
       err?.code === "P2002"
         ? "Username or email already in use"
@@ -39,13 +43,19 @@ export async function createUserPost(req, res) {
 }
 
 export async function logInPost(req, res, next) {
+  // If already authenticated, block re-login
+  if (req.user) {
+    return res.status(403).json({ error: "Already logged in" });
+  }
   passport.authenticate(
     "local",
     { session: false },
     async (err, user, info) => {
       try {
-        if (err)
+        if (err) {
+          console.error(err);
           return res.status(500).json({ message: "Authentication error" });
+        }
         if (!user) {
           return res
             .status(401)

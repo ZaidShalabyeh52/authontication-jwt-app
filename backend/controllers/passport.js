@@ -12,7 +12,7 @@ dotenv.config({ path: "../.env" });
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
-      const result = await prisma.user.findUniqe({ where: { username } });
+      const user = await prisma.user.findUnique({ where: { username } });
 
       if (!user) {
         return done(null, false, { message: "Incorrect username" });
@@ -39,7 +39,7 @@ const jwtOptions = {
 passport.use(
   new JwtStrategy(jwtOptions, async (payload, done) => {
     try {
-      const user = await prisma.user.findUniqe({ where: { id: payload.sub } });
+      const user = await prisma.user.findUnique({ where: { id: payload.id } });
 
       if (!user) {
         return done(null, false);
@@ -62,7 +62,7 @@ export async function createRefreshToken(userId) {
   const raw = crypto.randomBytes(64).toString("hex");
   const tokenHash = crypto.createHash("sha256").update(raw).digest("hex");
   const token = tokenHash;
-  const expiresAt = new Date(Date.now + 7 * 24 * 60 * 60 * 1000); // 7 days
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
   await prisma.refreshToken.create({
     data: {
       token,
@@ -75,8 +75,8 @@ export async function createRefreshToken(userId) {
 
 // verify refresh token and return associated user (or null)
 export async function verifyRefreshToken(rawToken) {
-  const tokenHash = crypto.createHash("sha256").update(raw).digest("hex");
-  const rt = await prisma.refreshToken.findUniqe({
+  const tokenHash = crypto.createHash("sha256").update(rawToken).digest("hex");
+  const rt = await prisma.refreshToken.findUnique({
     where: { token: tokenHash },
   });
   if (!rt || rt.expiresAt < new Date()) {

@@ -5,13 +5,18 @@ import {
   logInPost,
   logOutPost,
 } from "../controllers/usersController.js";
-import { requireAuth } from "../middlewares/auth.js";
+import { requireAuth, attachUserIfPresent } from "../middlewares/auth.js";
 
 const usersRouter = express.Router();
 
-usersRouter.post("/createUser", createUserPost);
+usersRouter.post("/ping", (req, res) => {
+  console.log("BODY:", req.body);
+  res.json(req.body);
+});
 
-usersRouter.post("/log-in", logInPost);
+usersRouter.post("/createUser", attachUserIfPresent, createUserPost);
+
+usersRouter.post("/login", attachUserIfPresent, logInPost);
 
 usersRouter.post("/refresh", refreshTokenPost);
 

@@ -7,8 +7,20 @@ import InputAdornment from "@mui/material/InputAdornment";
 import LockIcon from "@mui/icons-material/Lock";
 import shieldImg from "../assets/shield.png";
 import { useForm } from "react-hook-form";
+import api from "../lib/api.js";
+import { useNavigate } from "react-router-dom";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import IconButton from "@mui/material/IconButton";
+import { useState } from "react";
+import { getTableRowUtilityClass } from "@mui/material";
 
 function Register() {
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -25,12 +37,22 @@ function Register() {
         });
         return;
       }
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log(data);
+
+      const res = await api.post("/createUser", {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      });
+
+      if (res.status === 200 || res.status === 201) {
+        navigate("/protected");
+      }
     } catch (error) {
+      const msg =
+        error?.response?.data?.error || error?.message || "Registration failed";
       setError("root", {
         type: "server",
-        message: "Registration failed. Please try again.",
+        message: msg,
       });
     }
   };
@@ -116,6 +138,9 @@ function Register() {
                         <AccountCircle sx={{ color: "white" }} />
                       </InputAdornment>
                     ),
+                    inputProps: {
+                      maxLength: 20,
+                    },
                   },
                 }}
               />
@@ -170,7 +195,7 @@ function Register() {
                 onChange={(e) => setPassword(e.target.value)}
                 id="password"
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 sx={textFieldStyle}
                 fullWidth
                 slotProps={{
@@ -180,6 +205,24 @@ function Register() {
                         <LockIcon sx={{ color: "white" }} />
                       </InputAdornment>
                     ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                          sx={{ color: "white" }}
+                        >
+                          {showPassword ? (
+                            <VisibilityOffIcon />
+                          ) : (
+                            <VisibilityIcon />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                    inputProps: {
+                      maxLength: 25,
+                    },
                   },
                 }}
               />
@@ -198,7 +241,7 @@ function Register() {
                 })}
                 id="confirmPassword"
                 label="Confirm Password"
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 sx={textFieldStyle}
                 fullWidth
                 slotProps={{
@@ -208,6 +251,26 @@ function Register() {
                         <LockIcon sx={{ color: "white" }} />
                       </InputAdornment>
                     ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() =>
+                            setShowConfirmPassword(!showConfirmPassword)
+                          }
+                          edge="end"
+                          sx={{ color: "white" }}
+                        >
+                          {showConfirmPassword ? (
+                            <VisibilityOffIcon />
+                          ) : (
+                            <VisibilityIcon />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                    inputProps: {
+                      maxLength: 25,
+                    },
                   },
                 }}
               />

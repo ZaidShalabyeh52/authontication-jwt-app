@@ -7,8 +7,11 @@ import InputAdornment from "@mui/material/InputAdornment";
 import LockIcon from "@mui/icons-material/Lock";
 import shieldImg from "../assets/shield.png";
 import { useForm } from "react-hook-form";
+import api from "../lib/api.js";
+import { useNavigate } from "react-router-dom";
 
 function LogIn() {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -18,13 +21,21 @@ function LogIn() {
 
   const onSubmit = async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      // throw new Error(); axios goes here
-      console.log(data);
+      const res = await api.post("/login", {
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      });
+
+      if (res.status === 200 || res.status === 201) {
+        navigate("/protected");
+      }
     } catch (error) {
+      const msg =
+        error?.response?.data?.error || error?.message || "Registration failed";
       setError("root", {
         type: "server",
-        message: "Login failed. Please try again.",
+        message: msg,
       });
     }
   };
@@ -80,6 +91,14 @@ function LogIn() {
             onSubmit={handleSubmit(onSubmit)}
             className="w-52 sm:w-2xs  md:w-96 h-[430px] flex flex-col justify-center gap-6 bg-gray-800 p-8 rounded-lg shadow-lg"
           >
+            {errors.root ? (
+              <div className="h-1 text-sm text-red-500">
+                {errors.root.message}
+              </div>
+            ) : (
+              // reserve space to avoid layout shift
+              <div className="h-0.5">&nbsp;</div>
+            )}
             <div>
               <TextField
                 {...register("username", {

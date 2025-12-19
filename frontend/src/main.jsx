@@ -10,8 +10,10 @@ import LogIn from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import ProtectedPage from "./pages/ProtectedPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import PublicRoute from "./components/PublicRoute.jsx";
 import ErrorPage from "./pages/Error.jsx";
 import { ErrorBoundary } from "react-error-boundary";
+import Loading from "./components/Loading.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -24,10 +26,25 @@ createRoot(document.getElementById("root")).render(
         )}
       >
         <Routes>
+          <Route path="/loading" element={<Loading />} />
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/login" element={<LogIn />} />
-          <Route path="/register" element={<Register />} />{" "}
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <LogIn />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute>
+                <Register />
+              </PublicRoute>
+            }
+          />
           <Route
             path="/protected"
             element={

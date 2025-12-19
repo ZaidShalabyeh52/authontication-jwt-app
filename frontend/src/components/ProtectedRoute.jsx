@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Navigate } from "react-router-dom";
 import api from "../lib/api.js";
-//import LoadingSpinner from "./LoadingSpinner.jsx";
+import Loading from "./Loading.jsx";
 
 export default function ProtectedRoute({ children }) {
   const hasAlerted = useRef(false);
@@ -23,15 +23,18 @@ export default function ProtectedRoute({ children }) {
         if (mounted) setLoading(false);
       });
 
-    if (!authed && !hasAlerted.current) {
-      hasAlerted.current = true;
-      alert("You must be logged in to access this page.");
-    }
     return () => {
       mounted = false;
     };
   }, []);
 
-  if (loading) return <div className="p-4 text-center">Loading...</div>; // loading spinner can be used here
+  useEffect(() => {
+    if (!loading && !authed && !hasAlerted.current) {
+      hasAlerted.current = true;
+      alert("You must be logged in to access this page.");
+    }
+  }, [loading, authed]);
+
+  if (loading) return <Loading />;
   return authed ? children : <Navigate to="/login" />;
 }
