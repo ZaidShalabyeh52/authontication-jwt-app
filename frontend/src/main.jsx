@@ -14,6 +14,7 @@ import PublicRoute from "./components/PublicRoute.jsx";
 import ErrorPage from "./pages/Error.jsx";
 import { ErrorBoundary } from "react-error-boundary";
 import Loading from "./components/Loading.jsx";
+import PublicRoute from "./components/PublicRoute.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

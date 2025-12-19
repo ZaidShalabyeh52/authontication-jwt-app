@@ -1,33 +1,33 @@
-import { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import api from "../lib/api.js";
 import Loading from "./Loading.jsx";
+import { Navigate } from "react-router-dom";
 
-// Public-only guard: if already authenticated, redirect away (e.g., to /protected)
-export default function PublicRoute({ children, redirectTo = "/protected" }) {
-	const [authed, setAuthed] = useState(false);
-	const [loading, setLoading] = useState(true);
+export default function PublicRoute({ children }) {
+  const [authed, setAuthed] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-	useEffect(() => {
-		let active = true;
-		api
-			.get("/auth")
-			.then(() => {
-				if (active) setAuthed(true);
-			})
-			.catch(() => {
-				if (active) setAuthed(false);
-			})
-			.finally(() => {
-				if (active) setLoading(false);
-			});
+  useEffect(() => {
+    let active = true;
 
-		return () => {
-			active = false;
-		};
-	}, []);
+    api
+      .get("/auth")
+      .then(() => {
+        if (active) setAuthed(true);
+      })
+      .catch(() => {
+        if (active) setAuthed(false);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
 
-	if (loading) return <Loading />;
-	if (authed) return <Navigate to={redirectTo} replace />;
-	return children;
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  if (loading) return <Loading />;
+  if (!loading && authed) return <Navigate to="/protected" />;
+  return children;
 }
