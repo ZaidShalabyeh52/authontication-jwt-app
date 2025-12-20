@@ -53,8 +53,8 @@ export async function createUserPost(req, res) {
       .status(201)
       .json({ user: { id: user.id, username: user.username } });
   } catch (err) {
-    console.log("Body:", req.body);
-    console.error(err);
+    // console.log("Body:", req.body);
+    // console.error(err);
     const message =
       err?.code === "P2002"
         ? "Username or email already in use"
@@ -74,7 +74,7 @@ export async function logInPost(req, res, next) {
     async (err, user, info) => {
       try {
         if (err) {
-          console.error(err);
+          // console.error(err);
           return res.status(500).json({ message: "Authentication error" });
         }
         if (!user) {
@@ -156,18 +156,11 @@ export async function refreshTokenPost(req, res) {
 
 export async function logOutPost(req, res) {
   try {
-    const { refreshToken, revokeAll, userId } = req.body;
+    res.clearCookie("accessToken", { path: "/" });
+    res.clearCookie("refreshToken", { path: "/refresh" });
 
-    if (revokeAll && userId) {
-      await prisma.refreshToken.deleteMany({ where: { userId } });
-      return res.json({ message: "Logged out from all devices" });
-    }
-
-    if (!refreshToken)
-      return res.status(400).json({ error: "Refresh token required" });
-
-    await prisma.refreshToken.deleteMany({ where: { token: refreshToken } });
+    return res.json({ message: "Logged out successfully" });
   } catch (err) {
-    return res.status(500).json({ error: "Failed to log out" });
+    return res.status(500).json({ error: "Logout failed" });
   }
 }

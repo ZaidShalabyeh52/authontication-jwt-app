@@ -5,7 +5,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import EmailIcon from "@mui/icons-material/Email";
 import InputAdornment from "@mui/material/InputAdornment";
 import LockIcon from "@mui/icons-material/Lock";
-import shieldImg from "../assets/shield.png";
+import shieldImg from "../../public/shield.png";
 import { useForm } from "react-hook-form";
 import api from "../lib/api.js";
 import { useNavigate, Link } from "react-router-dom";
