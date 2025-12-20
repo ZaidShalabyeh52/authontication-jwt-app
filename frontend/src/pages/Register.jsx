@@ -8,15 +8,13 @@ import LockIcon from "@mui/icons-material/Lock";
 import shieldImg from "../assets/shield.png";
 import { useForm } from "react-hook-form";
 import api from "../lib/api.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 import { useState } from "react";
-import { getTableRowUtilityClass } from "@mui/material";
 
 function Register() {
-  const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -282,26 +280,33 @@ function Register() {
                 <p className="text-sm mt-0.5 h-4">&nbsp;</p>
               )}
             </div>
-
-            <Button
-              disabled={isSubmitting}
-              type="submit"
-              variant="contained"
-              color="success"
-              startIcon={<HowToRegOutlinedIcon />}
-              fullWidth
-              sx={{
-                "&.Mui-disabled": {
-                  backgroundColor: "#555",
-                  color: "#aaa",
-                  opacity: 0.7,
-                },
-                py: 1.5,
-                mt: 2,
-              }}
-            >
-              {isSubmitting ? "LOGGING IN..." : "CREATE ACCOUNT"}
-            </Button>
+            <div>
+              <Button
+                disabled={isSubmitting}
+                type="submit"
+                variant="contained"
+                color="success"
+                startIcon={<HowToRegOutlinedIcon />}
+                fullWidth
+                sx={{
+                  "&.Mui-disabled": {
+                    backgroundColor: "#555",
+                    color: "#aaa",
+                    opacity: 0.7,
+                  },
+                  py: 1.5,
+                  mt: 2,
+                }}
+              >
+                {isSubmitting ? "LOGGING IN..." : "CREATE ACCOUNT"}
+              </Button>
+              <Link
+                to="/login"
+                className="text-blue-500 hover:underline flex justify-center mt-2"
+              >
+                Already have an account ? Log In
+              </Link>
+            </div>
           </form>
         </div>
       </div>

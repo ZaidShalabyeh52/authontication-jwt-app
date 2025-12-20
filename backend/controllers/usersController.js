@@ -30,7 +30,28 @@ export async function createUserPost(req, res) {
       select: { id: true, username: true, email: true },
     });
 
-    return res.status(201).json(user);
+    const accessToken = signAccessToken(user);
+    const rt = await createRefreshToken(user.id); // expects user (uses user.id)
+    // createRefreshToken returns { token, expiresAt } in passport helper
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 15 * 60 * 1000, // 15 minutes
+      path: "/",
+    });
+
+    res.cookie("refreshToken", rt.token, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      path: "/refresh",
+    });
+
+    return res
+      .status(201)
+      .json({ user: { id: user.id, username: user.username } });
   } catch (err) {
     console.log("Body:", req.body);
     console.error(err);

@@ -10,7 +10,6 @@ import LogIn from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
 import ProtectedPage from "./pages/ProtectedPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import PublicRoute from "./components/PublicRoute.jsx";
 import ErrorPage from "./pages/Error.jsx";
 import { ErrorBoundary } from "react-error-boundary";
 import Loading from "./components/Loading.jsx";

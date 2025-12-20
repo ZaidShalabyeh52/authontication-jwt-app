@@ -8,9 +8,14 @@ import LockIcon from "@mui/icons-material/Lock";
 import shieldImg from "../assets/shield.png";
 import { useForm } from "react-hook-form";
 import api from "../lib/api.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import IconButton from "@mui/material/IconButton";
+import { useState } from "react";
 
 function LogIn() {
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -76,7 +81,7 @@ function LogIn() {
       />
       <div className="min-h-[80vh] flex items-center justify-center bg-gray-900 text-white">
         {/* gradient border wrapper */}
-        <div className="relative rounded-lg bg-linear-to-b from-[#0080ff] to-[#00ffb3] p-0.5">
+        <div className=" relative rounded-lg bg-linear-to-b from-[#0080ff] to-[#00ffb3] p-0.5">
           {/* centered label overlapping top border */}
 
           <div className="absolute -top-[22px] left-1/2 transform -translate-x-1/2 flex items-center justify-center">
@@ -176,7 +181,7 @@ function LogIn() {
                 })}
                 id="password"
                 label="Password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 sx={textFieldStyle}
                 fullWidth
                 slotProps={{
@@ -184,6 +189,23 @@ function LogIn() {
                     startAdornment: (
                       <InputAdornment position="start">
                         <LockIcon sx={{ color: "white" }} />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => {
+                            setShowPassword(true);
+                          }}
+                          edge="end"
+                          sx={{ color: "white" }}
+                        >
+                          {showPassword ? (
+                            <VisibilityOffIcon />
+                          ) : (
+                            <VisibilityIcon />
+                          )}
+                        </IconButton>
                       </InputAdornment>
                     ),
                   },
@@ -197,27 +219,35 @@ function LogIn() {
                 <p className="text-sm mt-0.5 h-4">&nbsp;</p>
               )}
             </div>
-            <Button
-              disabled={isSubmitting}
-              className="mt-10"
-              type="submit"
-              variant="contained"
-              color="success"
-              startIcon={<LoginIcon />}
-              fullWidth
-              sx={{
-                "&.Mui-disabled": {
-                  backgroundColor: "#555",
-                  color: "#aaa",
-                  opacity: 0.7,
-                },
-                py: 1.5,
-                mt: 2,
-              }}
-            >
-              {" "}
-              {isSubmitting ? "LOGGING IN..." : "LOGIN"}
-            </Button>
+            <div>
+              <Button
+                disabled={isSubmitting}
+                className="mt-10"
+                type="submit"
+                variant="contained"
+                color="success"
+                startIcon={<LoginIcon />}
+                fullWidth
+                sx={{
+                  "&.Mui-disabled": {
+                    backgroundColor: "#555",
+                    color: "#aaa",
+                    opacity: 0.7,
+                  },
+                  py: 1.5,
+                  mt: 2,
+                }}
+              >
+                {" "}
+                {isSubmitting ? "LOGGING IN..." : "LOGIN"}
+              </Button>
+              <Link
+                to="/register"
+                className="text-blue-500 hover:underline flex justify-center mt-2"
+              >
+                Don't have an account? Create
+              </Link>
+            </div>
           </form>
         </div>
       </div>
